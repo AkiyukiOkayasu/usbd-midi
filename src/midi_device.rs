@@ -1,4 +1,4 @@
-use crate::{constants::*, event_packet::UsbMidiEventPacket};
+use crate::constants::*;
 use usb_device::{class_prelude::*, Result};
 
 const MIDI_IN_SIZE: u8 = 0x06;
@@ -52,10 +52,6 @@ impl<B: UsbBus> MidiClass<'_, B> {
 
     pub fn send_bytes(&mut self, buffer: [u8; 4]) -> Result<usize> {
         self.standard_bulkin.write(&buffer)
-    }
-    pub fn send_message(&mut self, usb_midi: UsbMidiEventPacket) -> Result<usize> {
-        let bytes: [u8; MIDI_PACKET_SIZE] = usb_midi.into();
-        self.standard_bulkin.write(&bytes)
     }
 
     pub fn read(&mut self, buffer: &mut [u8]) -> Result<usize> {
